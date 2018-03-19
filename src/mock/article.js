@@ -10,6 +10,21 @@ for (let i = 0; i < count; i++) {
     timestamp: +Mock.Random.date('T'),
     author: '@first',
     reviewer: '@first',
+    img: 'http://cyy.zhcjjs.com/static/news/New.jpg',
+    subImg: [
+      {
+        name: '测试设计所的描述',
+        img: 'http://cyy.zhcjjs.com/static/news/New.jpg'
+      },
+      {
+        name: '测试设计所的描述',
+        img: 'http://cyy.zhcjjs.com/static/news/New.jpg'
+      },
+      {
+        name: '测试设计所的描述',
+        img: 'http://cyy.zhcjjs.com/static/news/New.jpg'
+      }
+    ],
     title: '@title(5, 10)',
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',

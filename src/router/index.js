@@ -156,7 +156,10 @@ export const asyncRouterMap = [
           { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
           { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
           { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
-          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
+          { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' }},
+          { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' }},
+          { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' }}
         ]
       },
       { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
