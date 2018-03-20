@@ -5,10 +5,10 @@
       <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleEdit" type="info" icon="el-icon-edit">编辑</el-button>
       <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleDel" type="danger" icon="el-icon-delete">删除</el-button>
     </div>
-    <el-table @selection-change="selectionChange" :data="certList" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+    <el-table @selection-change="selectionChange" :data="designerList" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column width="250px" align="center" label="证书图片">
+      <el-table-column width="250px" align="center" label="设计师图片">
         <template slot-scope="scope">
           <div class="cert-wrap-img">
             <img :src="scope.row.img" alt="scope.row.img" />
@@ -16,7 +16,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="证书名称" align="center">
+      <el-table-column min-width="300px" label="名字" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input class="edit-input" size="small" v-model="scope.row.name"></el-input>
@@ -30,15 +30,15 @@
       </el-table-column>
     </el-table>
     <!-- 对话弹框 -->
-    <el-dialog title="新建证书" :visible.sync="dialogFormVisible">
+    <el-dialog title="新增设计师" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="图片" prop="img">
           <el-upload :multiple="multiple" class="upload-box" action="https://jsonplaceholder.typicode.com/posts/" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
             <el-button size="small" type="primary" :disabled="uploadBtn">点击上传</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item label="名称" prop="name">
-          <el-input type="text" placeholder="请输入名称" v-model="temp.name"></el-input>
+        <el-form-item label="名字" prop="name">
+          <el-input type="text" placeholder="请输入名字" v-model="temp.name"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -66,7 +66,7 @@ export default {
       fileList: [],
       dialogFormVisible: false,
       uploadDialogVisible: false,
-      certList: testData.certList,
+      designerList: testData.designerList,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -119,7 +119,7 @@ export default {
       })
         .then(() => {
           var tary = [];
-          for (const item of this.certList) {
+          for (const item of this.designerList) {
             for (var tmp of this.selection) {
               if (item.id == tmp.id) {
                 tary.push(item);
@@ -127,8 +127,8 @@ export default {
             }
           }
           for (const item of tary) {
-            var dex = this.certList.indexOf(item);
-            this.certList.splice(dex, 1);
+            var dex = this.designerList.indexOf(item);
+            this.designerList.splice(dex, 1);
           }
           this.$message({
             type: "success",
@@ -202,9 +202,9 @@ export default {
     },
     handleCreate() {
       this.resetTemp();
-      this.dialogFormVisible = true;
       this.fileList = [];
-      this.editBtn = false;
+      this.uploadBtn = false;
+      this.dialogFormVisible = true;
       //   this.$nextTick(() => {
       //     this.$refs["dataForm"].clearValidate();
       //   });
@@ -212,7 +212,7 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          this.certList.push({
+          this.designerList.push({
             id: this.temp.id,
             name: this.temp.name,
             img: this.temp.img

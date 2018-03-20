@@ -6,7 +6,7 @@
       <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleDel" type="danger" icon="el-icon-delete">删除</el-button>
     </div>
     <el-table ref="prodTable" @selection-change="selectionChange" :data="prodList" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%" @expand-change="expendRow">
-      <el-table-column type="selection" width="55" />
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column align="center" width="80" type="expand" label="展开">
         <template slot-scope="scope">
           <div class="tab-tools">

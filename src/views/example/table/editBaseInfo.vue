@@ -1,51 +1,47 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="tab-tools">
-      <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-plus">新增</el-button>
-      <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleEdit" type="info" icon="el-icon-edit">编辑</el-button>
-      <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleDel" type="danger" icon="el-icon-delete">删除</el-button>
+      <!-- <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-plus">新增</el-button> -->
+      <el-button v-if="!isEdit" class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleEdit" type="info" icon="el-icon-edit">编辑</el-button>
+      <div v-else>
+        <el-button size="small" icon="el-icon-close" type="warning" @click="cancelEdit(scope.row)">取消</el-button>
+        <el-button size="small" icon="el-icon-check" type="success" @click="commitEdit(scope.row)">完成</el-button>
+      </div>
+      <!-- <el-button class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="handleDel" type="danger" icon="el-icon-delete">删除</el-button> -->
     </div>
-    <el-table @selection-change="selectionChange" :data="certList" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
-
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column width="250px" align="center" label="证书图片">
+    <el-table :data="baseInfo" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+      <el-table-column width="250px" align="center" label="设计所logo">
         <template slot-scope="scope">
           <div class="cert-wrap-img">
-            <img :src="scope.row.img" alt="scope.row.img" />
+            <img :src="scope.row.logo" alt="scope.row.logo" />
           </div>
         </template>
       </el-table-column>
-
-      <el-table-column min-width="300px" label="证书名称" align="center">
+      <el-table-column min-width="550px" align="center" label="描述">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-            <el-input class="edit-input" size="small" v-model="scope.row.name"></el-input>
-            <div class="cancel-btn">
-              <el-button size="small" icon="el-icon-close" type="warning" @click="cancelEdit(scope.row)">取消</el-button>
-              <el-button size="small" icon="el-icon-check" type="success" @click="commitEdit(scope.row)">完成</el-button>
-            </div>
+          <template v-if="isEdit">
+            <el-input type="textarea" class="edit-input" size="small" v-model="scope.row.desc"></el-input>
           </template>
-          <span v-else>{{ scope.row.name }}</span>
+          <span v-else>{{scope.row.desc}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column width="250px" align="center" label="地址">
+        <template slot-scope="scope">
+          <template v-if="isEdit">
+            <el-input type="textarea" class="edit-input" size="small" v-model="scope.row.address"></el-input>
+          </template>
+          <span v-else>{{scope.row.address}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column width="250px" align="center" label="电话">
+        <template slot-scope="scope">
+          <template v-if="isEdit">
+            <el-input class="edit-input" size="small" v-model="scope.row.phone"></el-input>
+          </template>
+          <span v-else>{{scope.row.phone}}</span>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 对话弹框 -->
-    <el-dialog title="新建证书" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
-        <el-form-item label="图片" prop="img">
-          <el-upload :multiple="multiple" class="upload-box" action="https://jsonplaceholder.typicode.com/posts/" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
-            <el-button size="small" type="primary" :disabled="uploadBtn">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="名称" prop="name">
-          <el-input type="text" placeholder="请输入名称" v-model="temp.name"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="createData">确定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -58,6 +54,7 @@ export default {
   name: "inlineEditTable",
   data() {
     return {
+      isEdit: false,
       selection: [],
       editBtn: false,
       multiple: false,
@@ -66,7 +63,7 @@ export default {
       fileList: [],
       dialogFormVisible: false,
       uploadDialogVisible: false,
-      certList: testData.certList,
+      baseInfo: testData.baseInfo,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -143,21 +140,21 @@ export default {
         });
     },
     handleEdit() {
-      var size = this.selection.length;
-      if (size != 1) {
-        this.$alert("请选择一个证书进行编辑", "提示");
-        return;
-      }
-      this.editBtn = true;
-      var row = this.selection[0];
-      // row.edit = !row.ed1t;
-      new Vue.set(row, "edit", true);
+      this.isEdit = true;
+      // var size = this.selection.length;
+      // if (size != 1) {
+      //   this.$alert("请选择一个证书进行编辑", "提示");
+      //   return;
+      // }
+      // this.editBtn = true;
+      // var row = this.selection[0];
+      // // row.edit = !row.ed1t;
+      // new Vue.set(row, "edit", true);
     },
     selectionChange(selection) {
       this.selection = selection;
     },
-    beforeUpload() {
-    },
+    beforeUpload() {},
     uploadError() {
       this.uploadBtn = true;
     },
@@ -277,7 +274,7 @@ export default {
 
 <style scoped lang="less">
 .edit-input {
-  padding-right: 200px;
+  // padding-right: 200px;
 }
 .cancel-btn {
   position: absolute;
