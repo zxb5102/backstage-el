@@ -153,6 +153,7 @@ export default {
       });
     },
     cancelEdit(row) {
+      console.log(row);
       row.title = row.originalTitle;
       row.edit = false;
       this.$message({
