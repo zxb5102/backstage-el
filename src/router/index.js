@@ -28,32 +28,68 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
-  { path: '/404', component: _import('errorPage/404'), hidden: true },
-  { path: '/401', component: _import('errorPage/401'), hidden: true },
   {
-    path: '',
+    path: '/',
     component: Layout,
-    redirect: 'dashboard',
-    children: [{
-      path: 'dashboard',
-      component: _import('dashboard/index'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
-    }]
-  },
-  {
-    path: '/documentation',
-    component: Layout,
-    redirect: '/documentation/index',
-    children: [{
-      path: 'index',
-      component: _import('documentation/index'),
-      name: 'documentation',
-      meta: { title: 'documentation', icon: 'documentation', noCache: true }
-    }]
+    redirect: '/dashboard',
+    name: 'example',
+    meta: {
+      title: '信息管理',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: '/dashboard',
+        component: _import('example/table/index'),
+        redirect: '/dashboard/editBaseInfo',
+        name: 'Table',
+        meta: {
+          title: '编辑个人主页',
+          icon: 'table'
+        },
+        children: [
+          // { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+          // { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+          // { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          // { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
+          // { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
+          // { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
+          { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' }},
+          { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' }},
+          { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' }},
+          { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' }},
+          { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' }}
+        ]
+      },
+      // { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
+    ]
   }
+  // { path: '/login', component: _import('login/index'), hidden: true },
+  // { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
+  // { path: '/404', component: _import('errorPage/404'), hidden: true },
+  // { path: '/401', component: _import('errorPage/401'), hidden: true },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'dashboard',
+  //   children: [{
+  //     path: 'dashboard',
+  //     component: _import('dashboard/index'),
+  //     name: 'dashboard',
+  //     meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+  //   }]
+  // },
+  // {
+  //   path: '/documentation',
+  //   component: Layout,
+  //   redirect: '/documentation/index',
+  //   children: [{
+  //     path: 'index',
+  //     component: _import('documentation/index'),
+  //     name: 'documentation',
+  //     meta: { title: 'documentation', icon: 'documentation', noCache: true }
+  //   }]
+  // }
 ]
 
 export default new Router({

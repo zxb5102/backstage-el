@@ -55,6 +55,9 @@ const permission = {
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })
+    },
+    addConstantRoutes({commit}){
+      commit('SET_ROUTERS',[]);
     }
   }
 }
