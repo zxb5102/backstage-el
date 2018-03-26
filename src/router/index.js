@@ -67,7 +67,8 @@ export const constantRouterMap = [
       { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' } },
       { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
       { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
-      { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } }
+      { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } },
+      { path: 'editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '活动沙龙' } }
     ]
     // children: [
     //   {

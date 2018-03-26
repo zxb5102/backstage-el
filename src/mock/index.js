@@ -7,11 +7,20 @@ import transactionAPI from './transaction'
 // Mock.setup({
 //   timeout: '350-600'
 // })
+Mock.mock(/\/imgupload/, 'post', {
+   uploaded: 1,
+    // fileName: "foo(2).jpg",
+    url: "http://cyy.zhcjjs.com/Photos/Company/Designer/Designer61.jpg",
+    // error: {
+    //     "message": "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+    // }
+})
 
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
 Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
+
 
 // 文章相关
 Mock.mock(/\/article\/list/, 'get', articleAPI.getList)
