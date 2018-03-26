@@ -29,41 +29,66 @@ import Layout from '../views/layout/Layout'
 **/
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
-    name: 'example',
-    meta: {
-      title: '信息管理',
-      icon: 'example'
-    },
+    // name: 'example',
+    // meta: {
+    //   title: '基本信息',
+    //   icon: 'example'
+    // },
     children: [
       {
-        path: '/dashboard',
-        component: _import('example/table/index'),
-        redirect: '/dashboard/editBaseInfo',
-        name: 'Table',
-        meta: {
-          title: '编辑个人主页',
-          icon: 'table'
-        },
-        children: [
-          // { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
-          // { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
-          // { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-          // { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
-          // { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
-          // { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
-          { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' }},
-          { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' }},
-          { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' }},
-          { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' }},
-          { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' }}
-        ]
+        path: 'dashboard',
+        component: _import('dashboard/index'),
+        name: 'dashboard',
+        meta: { title: '控制台', icon: 'dashboard', noCache: true }
       },
-      // { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
     ]
-  }
+
+  },
+  {
+    path: '/user',
+    redirect: '/user/editBaseInfo',
+    name: 'Table',
+    meta: {
+      title: '编辑个人主页',
+      icon: 'table'
+    },
+    component: Layout,
+    children: [
+      // { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+      // { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+      // { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+      // { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
+      // { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
+      // { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
+      { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' } },
+      { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' } },
+      { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
+      { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
+      { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } }
+    ]
+    // children: [
+    //   {
+    //     path: '/dashboard',
+    //     children: [
+    //       // { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+    //       // { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+    //       // { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+    //       // { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
+    //       // { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
+    //       // { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
+    //       { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' } },
+    //       { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' } },
+    //       { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
+    //       { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
+    //       { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } }
+    //     ]
+    //   },
+    //   // { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
+    // ]
+  },
   // { path: '/login', component: _import('login/index'), hidden: true },
   // { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
   // { path: '/404', component: _import('errorPage/404'), hidden: true },
@@ -137,17 +162,17 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'tinymce', component: _import('components-demo/tinymce'), name: 'tinymce-demo', meta: { title: 'tinymce' }},
-      { path: 'markdown', component: _import('components-demo/markdown'), name: 'markdown-demo', meta: { title: 'markdown' }},
-      { path: 'json-editor', component: _import('components-demo/jsonEditor'), name: 'jsonEditor-demo', meta: { title: 'jsonEditor' }},
-      { path: 'dnd-list', component: _import('components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' }},
-      { path: 'splitpane', component: _import('components-demo/splitpane'), name: 'splitpane-demo', meta: { title: 'splitPane' }},
-      { path: 'avatar-upload', component: _import('components-demo/avatarUpload'), name: 'avatarUpload-demo', meta: { title: 'avatarUpload' }},
-      { path: 'dropzone', component: _import('components-demo/dropzone'), name: 'dropzone-demo', meta: { title: 'dropzone' }},
-      { path: 'sticky', component: _import('components-demo/sticky'), name: 'sticky-demo', meta: { title: 'sticky' }},
-      { path: 'count-to', component: _import('components-demo/countTo'), name: 'countTo-demo', meta: { title: 'countTo' }},
-      { path: 'mixin', component: _import('components-demo/mixin'), name: 'componentMixin-demo', meta: { title: 'componentMixin' }},
-      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop-demo', meta: { title: 'backToTop' }}
+      { path: 'tinymce', component: _import('components-demo/tinymce'), name: 'tinymce-demo', meta: { title: 'tinymce' } },
+      { path: 'markdown', component: _import('components-demo/markdown'), name: 'markdown-demo', meta: { title: 'markdown' } },
+      { path: 'json-editor', component: _import('components-demo/jsonEditor'), name: 'jsonEditor-demo', meta: { title: 'jsonEditor' } },
+      { path: 'dnd-list', component: _import('components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' } },
+      { path: 'splitpane', component: _import('components-demo/splitpane'), name: 'splitpane-demo', meta: { title: 'splitPane' } },
+      { path: 'avatar-upload', component: _import('components-demo/avatarUpload'), name: 'avatarUpload-demo', meta: { title: 'avatarUpload' } },
+      { path: 'dropzone', component: _import('components-demo/dropzone'), name: 'dropzone-demo', meta: { title: 'dropzone' } },
+      { path: 'sticky', component: _import('components-demo/sticky'), name: 'sticky-demo', meta: { title: 'sticky' } },
+      { path: 'count-to', component: _import('components-demo/countTo'), name: 'countTo-demo', meta: { title: 'countTo' } },
+      { path: 'mixin', component: _import('components-demo/mixin'), name: 'componentMixin-demo', meta: { title: 'componentMixin' } },
+      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop-demo', meta: { title: 'backToTop' } }
     ]
   },
 
@@ -161,9 +186,9 @@ export const asyncRouterMap = [
       icon: 'chart'
     },
     children: [
-      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
-      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
-      { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
+      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true } },
+      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true } },
+      { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true } }
     ]
   },
 
@@ -187,20 +212,20 @@ export const asyncRouterMap = [
           icon: 'table'
         },
         children: [
-          { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
-          { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
-          { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-          { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
-          { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
-          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
-          { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' }},
-          { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' }},
-          { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' }},
-          { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' }},
-          { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' }}
+          { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' } },
+          { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' } },
+          { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' } },
+          { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' } },
+          { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' } },
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' } },
+          { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' } },
+          { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' } },
+          { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
+          { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
+          { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } }
         ]
       },
-      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
+      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' } }
     ]
   },
 
@@ -214,8 +239,8 @@ export const asyncRouterMap = [
       icon: 'form'
     },
     children: [
-      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: 'createForm', icon: 'table' }},
-      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: 'editForm', icon: 'table' }}
+      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: 'createForm', icon: 'table' } },
+      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: 'editForm', icon: 'table' } }
     ]
   },
 
@@ -229,8 +254,8 @@ export const asyncRouterMap = [
       icon: '404'
     },
     children: [
-      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
-      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
+      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true } },
+      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true } }
     ]
   },
 
@@ -238,7 +263,7 @@ export const asyncRouterMap = [
     path: '/error-log',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: 'errorLog', icon: 'bug' }}]
+    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: 'errorLog', icon: 'bug' } }]
   },
 
   {
@@ -251,9 +276,9 @@ export const asyncRouterMap = [
       icon: 'excel'
     },
     children: [
-      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'exportExcel' }},
-      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'selectExcel' }},
-      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'uploadExcel' }}
+      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'exportExcel' } },
+      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'selectExcel' } },
+      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'uploadExcel' } }
     ]
   },
 
@@ -263,27 +288,27 @@ export const asyncRouterMap = [
     redirect: '/zip/download',
     alwaysShow: true,
     meta: { title: 'zip', icon: 'zip' },
-    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip' }}]
+    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip' } }]
   },
 
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'index', component: _import('theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
+    children: [{ path: 'index', component: _import('theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' } }]
   },
 
   {
     path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboardDemo', icon: 'clipboard' }}]
+    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboardDemo', icon: 'clipboard' } }]
   },
 
   {
     path: '/i18n',
     component: Layout,
-    children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+    children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' } }]
   },
 
   { path: '*', redirect: '/404', hidden: true }
