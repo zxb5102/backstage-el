@@ -28,6 +28,27 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
+  // { path: 'user/salon/editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '编辑' }, hidden: true },
+  // {path:''},
+  // {
+  //   path: '/user/editSalon',
+  //   component: Layout,
+  //   redirect: '',
+  //   hidden:true,
+  //   // name: 'example',
+  //   // meta: {
+  //   //   title: '基本信息',
+  //   //   icon: 'example'
+  //   // },
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: _import('example/table/editSalon'),
+  //       name: '编辑',
+  //       meta: { title: '编辑', icon: 'dashboard', noCache: true }
+  //     },
+  //   ]
+  // },
   {
     path: '',
     component: Layout,
@@ -45,7 +66,6 @@ export const constantRouterMap = [
         meta: { title: '控制台', icon: 'dashboard', noCache: true }
       },
     ]
-
   },
   {
     path: '/user',
@@ -68,7 +88,28 @@ export const constantRouterMap = [
       { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
       { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
       { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } },
-      { path: 'editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '活动沙龙' } }
+      {
+        path: 'editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '活动沙龙' },
+      },
+      // {
+      //   path: 'salon',
+      //   redirect: 'salonList',
+      //   name: '',
+      //   meta: {
+      //     title: '活动沙龙',
+      //     icon: 'table'
+      //   },
+      //   component: Layout,
+      //   children: [
+      //     {
+      //     path: 'salonList', component: _import('example/table/salonList'), name: 'salonList', meta: { title: '活动沙龙列表' },
+      //     },
+      //   ]
+
+      // }
+      // children: [
+      //   { path: 'editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '编辑' },hidden:true },
+      // ]
     ]
     // children: [
     //   {

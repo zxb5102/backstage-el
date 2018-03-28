@@ -53,7 +53,7 @@
     <el-dialog title="替换logo" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="图片" prop="logo">
-          <el-upload :multiple="multiple" class="upload-box" action="https://jsonplaceholder.typicode.com/posts/" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
+          <el-upload :multiple="multiple" class="upload-box" action="/Upload/Image" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
             <el-button size="small" type="primary" :disabled="uploadBtn">点击上传</el-button>
           </el-upload>
         </el-form-item>
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import util from "@/util";
 import { fetchList } from "@/api/article";
 import testData from "@/testData.js";
 import Vue from "vue";
@@ -134,8 +136,8 @@ export default {
       this.dialogFormVisible = true;
       this.fileList = [];
       this.temp = {
-        id:undefined,
-        logo:""
+        id: undefined,
+        logo: ""
       };
       this.uploadBtn = false;
     },
@@ -264,6 +266,27 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
+          axios({
+            method: "post",
+            url: "/Account/GetInfo",
+            data: {}
+          })
+            .then(resp => {
+              var data = resp.data;
+              if (data.code == 0) {
+                var companyId = data.user.institutionId;
+                // data.
+                // window.currUser = data.data.user;
+                // axios.({
+                //   method:'post',
+                //   url:"/"
+                // }).then()
+              }
+            })
+            .catch();
+          // axios({
+          //   url:'Home/UploadLogoModifyFile?parameter=1'
+          // }).then().catch();
           this.baseInfo[0].logo = this.temp.logo;
           // this.certList.push({
           //   id: this.temp.id,
