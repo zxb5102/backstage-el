@@ -102,10 +102,19 @@ export default {
   created() {
     axios({
       method: "post",
-      url: "/Salon/List"
+      url: "/Salon/List",
+      headers: { "X-Requested-With": "XMLHttpRequest" }
     })
       .then(resp => {
-        this.salonList = resp.data;
+        var data = resp.data;
+        for (var item of data.data) {
+          this.salonList.push({
+            id: item.id,
+            title: item.title,
+            cover: item.cover.url,
+            desc: item.summary
+          });
+        }
         // console.log(resp.data);
       })
       .catch(error => {
@@ -155,6 +164,7 @@ export default {
         this.$alert("请选择一个编辑", "提示");
         return;
       }
+      this.form.content = "";
       this.realType = "edit";
       this.isEdit = true;
       this.type = "edit";
@@ -163,12 +173,13 @@ export default {
       // }, 200);
       axios({
         method: "post",
-        url: "/Salon/Detail/" + id
+        url: "/Salon/Details/" + id,
+        headers: { "X-Requested-With": "XMLHttpRequest" }
       })
         .then(resp => {
           var data = resp.data;
           if (data.code == 0) {
-            var uploadPath = "/imgupload";
+            var uploadPath = "/Upload/Image";
             CKEDITOR.config.filebrowserImageUploadUrl = uploadPath;
             CKEDITOR.replace("salon");
             // console.log(.on);
@@ -313,18 +324,21 @@ export default {
             url = "/Salon/Create";
           } else {
             url = "/Salon/Edit";
-            data.id = this.selection[0].id;
+            data.Id = this.selection[0].id;
           }
+          console.log(url);
           axios({
             method: "post",
             url: url,
-            data: data
+            data: data,
+            headers: { "X-Requested-With": "XMLHttpRequest" }
           })
             .then(resp => {
               var code = resp.data.code;
               if (code == 0) {
                 // add or update
                 if (this.realType == "add") {
+                  // console.log(this.salonList);
                   this.salonList.push({
                     id: resp.data.data.id,
                     title: this.form.title,

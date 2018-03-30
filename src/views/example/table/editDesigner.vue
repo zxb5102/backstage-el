@@ -11,21 +11,53 @@
       <el-table-column width="250px" align="center" label="设计师图片">
         <template slot-scope="scope">
           <div class="cert-wrap-img">
-            <img :src="scope.row.img" alt="scope.row.img" />
+            <img :src="scope.row.img" :alt="scope.row.img" />
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="名字" align="center">
+      <el-table-column min-width="100px" label="名字" align="center">
+        <template slot-scope="scope">
+          <!-- <template v-if="scope.row.edit">
+            <el-input  size="small" v-model="scope.row.name"></el-input>
+          </template> -->
+          <span>{{ scope.row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" label="职位" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-input class="edit-input" size="small" v-model="scope.row.name"></el-input>
+            <el-input size="small" v-model="scope.row.position"></el-input>
+          </template>
+          <span v-else>{{ scope.row.position }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" label="邮箱" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.edit">
+            <el-input size="small" v-model="scope.row.mail"></el-input>
+          </template>
+          <span v-else>{{ scope.row.mail }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="100px" label="联系方式" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.edit">
+            <el-input size="small" v-model="scope.row.phone"></el-input>
+          </template>
+          <span v-else>{{ scope.row.phone }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="300px" label="描述" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.edit">
+            <el-input class="edit-input" size="small" v-model="scope.row.desc"></el-input>
             <div class="cancel-btn">
               <el-button size="small" icon="el-icon-close" type="warning" @click="cancelEdit(scope.row)">取消</el-button>
               <el-button size="small" icon="el-icon-check" type="success" @click="commitEdit(scope.row)">完成</el-button>
             </div>
           </template>
-          <span v-else>{{ scope.row.name }}</span>
+          <span v-else>{{ scope.row.desc }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -33,12 +65,24 @@
     <el-dialog title="新增设计师" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="图片" prop="img">
-          <el-upload :multiple="multiple" class="upload-box" action="https://jsonplaceholder.typicode.com/posts/" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
+          <el-upload :multiple="multiple" class="upload-box" action="/Upload/Image" :before-upload="beforeUpload" :on-success="uploadSuccess" :on-preview="handlePreview" :on-remove="handleImgRemove" :file-list="fileList" list-type="picture">
             <el-button size="small" type="primary" :disabled="uploadBtn">点击上传</el-button>
           </el-upload>
         </el-form-item>
         <el-form-item label="名字" prop="name">
           <el-input type="text" placeholder="请输入名字" v-model="temp.name"></el-input>
+        </el-form-item>
+        <el-form-item label="职位" prop="position">
+          <el-input type="text" placeholder="请输入职位" v-model="temp.position"></el-input>
+        </el-form-item>
+        <el-form-item label="描述" prop="desc">
+          <el-input type="text" placeholder="请输入描述" v-model="temp.desc"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="mail">
+          <el-input type="text" placeholder="请输入邮箱" v-model="temp.mail"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input type="text" placeholder="请输入电话" v-model="temp.phone"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -50,6 +94,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { fetchList } from "@/api/article";
 import testData from "@/testData.js";
 import Vue from "vue";
@@ -59,6 +104,7 @@ export default {
   data() {
     return {
       selection: [],
+      houseId: undefined,
       editBtn: false,
       multiple: false,
       currRow: {},
@@ -66,7 +112,7 @@ export default {
       fileList: [],
       dialogFormVisible: false,
       uploadDialogVisible: false,
-      designerList: testData.designerList,
+      designerList: [],
       listLoading: true,
       listQuery: {
         page: 1,
@@ -75,11 +121,20 @@ export default {
       temp: {
         id: undefined,
         name: "",
-        img: ""
+        img: "",
+        mail: "",
+        position: "",
+        desc: ""
       },
       rules: {
-        name: [{ required: true, message: "该项为必填项", trigger: "blur" }],
-        img: [{ required: true, message: "请上传证书图片", trigger: "blur" }]
+        name: [
+          { required: true, message: "请填写设计师的姓名", trigger: "blur" }
+        ],
+        img: [{ required: true, message: "请上传设计师图片", trigger: "blur" }],
+        position: [{ required: true, message: "请输入职位", trigger: "blur" }],
+        desc: [{ required: true, message: "请填写描述", trigger: "blur" }],
+        mail: [{ required: true, message: "请填写邮箱", trigger: "blur" }],
+        phone: [{ required: true, message: "请填写电话", trigger: "blur" }]
       }
     };
   },
@@ -94,13 +149,63 @@ export default {
     }
   },
   created() {
-    this.getList();
+    // this.getList();
+    // designerList
+    axios({
+      method: "post",
+      url: "/Account/GetInfo"
+    }).then(resp => {
+      var houseId = resp.data.data.user.institutionId;
+      this.houseId = houseId;
+      axios({
+        method: "post",
+        url: "/Home/GetDesignPro?parameter=" + houseId
+      }).then(resp => {
+        var data = resp.data.Designer;
+        for (var item of data) {
+          this.designerList.push({
+            id: item.Id,
+            name: item.DesigerName,
+            originName: item.DesigerName,
+            mail: item.Mail,
+            originMail: item.Mail,
+            desc: item.Introduce,
+            originDesc: item.Introduce,
+            phone: item.Phone,
+            originPhone: item.Phone,
+            position: item.Position,
+            originPosition: item.Position,
+            img: item.Photo.replace("../..", "")
+          });
+        }
+        this.listLoading = false;
+      });
+    });
   },
   methods: {
     commitEdit(row) {
       this.editBtn = false;
       row.originName = row.name;
+      row.originPosition = row.position;
+      row.originMail = row.mail;
+      row.originPhone = row.phone;
+      row.originDesc = row.desc;
       row.edit = false;
+      axios({
+        method: "post",
+        url: "/Home/UpdateDesignerInfo",
+        data: {
+          parameters: [
+            row.id,
+            row.desc,
+            row.mail,
+            row.phone,
+            row.img,
+            this.houseId,
+            row.position
+          ]
+        }
+      }).then();
       this.$message({
         message: "完成编辑",
         type: "success"
@@ -129,6 +234,17 @@ export default {
           for (const item of tary) {
             var dex = this.designerList.indexOf(item);
             this.designerList.splice(dex, 1);
+            axios({
+              url:"/Home/DeleteDesignerInfo",
+              method:'post',
+              data:{
+                parameters:[item.id, this.houseId]
+              }
+            }).then(resp=>{
+              // if(resp.data == "Succeed"){
+              //   // cosole.log(1);
+              // }
+            });
           }
           this.$message({
             type: "success",
@@ -156,13 +272,12 @@ export default {
     selectionChange(selection) {
       this.selection = selection;
     },
-    beforeUpload() {
-    },
+    beforeUpload() {},
     uploadError() {
       this.uploadBtn = true;
     },
     uploadSuccess(resp, file, fileList) {
-      this.temp.img = file.url;
+      this.temp.img = resp.data.url;
       this.uploadBtn = true;
       this.temp.id = new Date().getTime();
     },
@@ -194,6 +309,10 @@ export default {
     cancelEdit(row) {
       this.editBtn = false;
       row.name = row.originName;
+      row.position = row.originPosition;
+      row.mail = row.originMail;
+      row.phone = row.originPhone;
+      row.desc = row.originDesc;
       row.edit = false;
       this.$message({
         message: "取消编辑",
@@ -212,10 +331,40 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          this.designerList.push({
-            id: this.temp.id,
-            name: this.temp.name,
-            img: this.temp.img
+          axios({
+            url: "/Home/SavaDesignerInfo",
+            method: "post",
+            data: {
+              parameters: [
+                this.temp.name,
+                this.temp.desc,
+                this.temp.mail,
+                this.temp.phone,
+                this.temp.img,
+                this.houseId,
+                this.temp.position
+              ]
+            }
+          }).then(resp => {
+            var data = resp.data;
+            var item = this.temp;
+            // console.log(item);
+            this.designerList.push({
+              id: data.Id,
+              // name: this.temp.name,
+              // img: this.temp.img
+              name: item.name,
+              originName: item.name,
+              mail: item.mail,
+              originMail: item.mail,
+              desc: item.desc,
+              originDesc: item.desc,
+              phone: item.phone,
+              originPhone: item.phone,
+              position: item.position,
+              originPosition: item.position,
+              img: item.img,
+            });
           });
           this.dialogFormVisible = false;
         } else {

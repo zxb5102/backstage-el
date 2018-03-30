@@ -1,3 +1,19 @@
+var prodSubImgRealPath = [{"Id":68,"ProductId":28,"ProductName":"CITY台湾奶茶","DetailName":"","Description":"","DetailPhoto":"../../Photos/Company/ProductDetail/CITY台湾奶茶_020.jpg","CreateTime":"\/Date(1502680906468)\/"},{"Id":1398,"ProductId":28,"ProductName":null,"DetailName":"arrowR - 副本 (2).png","Description":"arrowR - 副本 (2).png","DetailPhoto":"/Images/6ab5963c-ebdb-49f1-95f1-43d380c54e2c.png","CreateTime":"\/Date(1522371443747)\/"},{"Id":1399,"ProductId":28,"ProductName":null,"DetailName":"black-close - 副本.png","Description":"black-close - 副本.png","DetailPhoto":"/Images/7c33209a-3b9a-4de6-a8b5-c730038a3def.png","CreateTime":"\/Date(1522371443756)\/"},{"Id":71,"ProductId":28,"ProductName":"CITY台湾奶茶","DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"../../Photos/Company/ProductDetail/CITY台湾奶茶_030.jpg","CreateTime":"\/Date(1502680950352)\/"},{"Id":72,"ProductId":28,"ProductName":"CITY台湾奶茶","DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"../../Photos/Company/ProductDetail/CITY台湾奶茶_032.jpg","CreateTime":"\/Date(1502680968910)\/"},{"Id":73,"ProductId":28,"ProductName":"CITY台湾奶茶","DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"../../Photos/Company/ProductDetail/CITY台湾奶茶_039.jpg","CreateTime":"\/Date(1502680980138)\/"}];
+var addNewDesigner = {
+    "Id": 34,
+    "DesigerName": "xx",
+    "Position": "xx",
+    "CompanyId": 1,
+    "Introduce": "xx",
+    "Photo": "../../Photos/Company/Designer/",
+    "Phone": "13684870424",
+    "Mail": "xx@qq.com",
+    "CreateTime": "/Date(1522300759635)/",
+    "IsAvaliable": true
+};
+var addNewProdImg = {"Id":1397,"ProductId":28,"ProductName":null,"DetailName":"namepci","Description":"desc pic","DetailPhoto":"../../Photos/Company/ProductDetail/arrowR.png","CreateTime":"\/Date(1522299804515)\/"};
+var prodSubImg = {"total":4,"rows":[{"Id":68,"ProductId":28,"ProductName":null,"DetailName":"","Description":"","DetailPhoto":"CITY台湾奶茶_020.jpg","CreateTime":null},{"Id":71,"ProductId":28,"ProductName":null,"DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"CITY台湾奶茶_030.jpg","CreateTime":null},{"Id":72,"ProductId":28,"ProductName":null,"DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"CITY台湾奶茶_032.jpg","CreateTime":null},{"Id":73,"ProductId":28,"ProductName":null,"DetailName":"CITY台湾奶茶","Description":"","DetailPhoto":"CITY台湾奶茶_039.jpg","CreateTime":null}]};
+var saveProdServerResult = { "Id": 1105, "ProductName": "fs", "ProductPhoto": "../../Photos/Company/Product/", "Description": "fss", "Author": "fsdf", "DesignHouseId": 0, "Type": 4, "CreateTime": "\/Date(1522292155692)\/" };
 var userInfo = {
     "code": 0,
     "msg": "",
@@ -578,32 +594,7 @@ var all = {
         }
     ]
 };
-var salonList = [
-    {
-        id: 1,
-        ctime: "2018-01-01 10:10:10",
-        title: "这是一个测试标题1",
-        // cover: {
-        cover: "http://cyy.zhcjjs.com/Photos/Company/Designer/DesignerWang.jpg",
-        //     id: 1
-        // },
-        // images: [{
-        //     id: 3,
-        //     url: "http://cyy.zhcjjs.com/Photos/Company/Designer/DesignerWang.jpg"
-        // }, {
-        //     id: 5,
-        //     url: "http://cyy.zhcjjs.com/Photos/Company/Designer/DesignerWang.jpg"
-        // }],
-        desc: "测测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述试描述",
-    },
-    {
-        id: 2,
-        ctime: "2018-01-01 10:10:10",
-        title: "这是一个测试标题",
-        cover: "http://cyy.zhcjjs.com/Photos/Company/Designer/DesignerWang.jpg",
-        desc: "测测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述测试描述试描述",
-    },
-];
+var salonList = {"code":0,"msg":null,"data":[{"id":1,"ctime":"Mar 30 2018 10:10AM","title":"title","cover":{"id":26,"url":"/Images/1b1d98e3-3adb-4cad-9f85-1c369ea1418d.png"},"summary":"content hhh"},{"id":2,"ctime":"Mar 30 2018 10:13AM","title":"fsdf","cover":{"id":27,"url":"/Images/a2ebf6e4-3ef6-4978-859b-ba263f304118.png"},"summary":"fsfs"}]};
 var baseInfo =
     [
         {
@@ -693,7 +684,8 @@ var prodMsg = [
         originName: '测试作品名称1',
         desc: "作品的描述",
         originDesc: "作品的描述",
-        edit: false
+        edit: false,
+        coverImg: "http://cyy.zhcjjs.com/Photos/Company/Logo/%E8%AE%BE%E8%AE%A1%E4%B8%80%E6%89%80.JPG"
     },
     {
         id: "2",
@@ -701,7 +693,8 @@ var prodMsg = [
         originName: '测试作品名称2',
         desc: "作品的描述",
         originDesc: "作品的描述",
-        edit: false
+        edit: false,
+        coverImg: "http://cyy.zhcjjs.com/Photos/Company/Logo/%E8%AE%BE%E8%AE%A1%E4%B8%80%E6%89%80.JPG"
     },
 ];
 var subImg = [
@@ -740,5 +733,10 @@ export default {
     baseInfo,
     salonList,
     all,
-    userInfo
+    userInfo,
+    saveProdServerResult,
+    prodSubImg,
+    addNewProdImg,
+    addNewDesigner,
+    prodSubImgRealPath
 };

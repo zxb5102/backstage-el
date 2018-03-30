@@ -20,11 +20,12 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
-  // externals: {
-  //   CKEDITOR: "CKEDITOR"
-  // },
+  externals: {
+    CKEDITOR: "CKEDITOR"
+  },
   context: path.resolve(__dirname, '../'),
   entry: {
+    babel:'babel-polyfill',
     app: './src/main.js'
   },
   output: {

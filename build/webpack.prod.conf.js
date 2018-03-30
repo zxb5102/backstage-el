@@ -11,11 +11,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const env = require('../config/'+process.env.env_config+'.env')
+const env = require('../config/' + process.env.env_config + '.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -35,7 +35,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env,
-      'ISDEV':false
+      'ISDEV': false
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
@@ -68,8 +68,10 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
-      favicon: resolve('favicon.ico'),
-      title: 'vue-element-admin',
+      // favicon: resolve('favicon.ico'),
+      title: '中航长江设计师产业园',
+      // chunks:['babel',"app",""],
+      chunks: ['babel', "manifest", "vendor", "app"],
       path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
       minify: {
         removeComments: true,
@@ -79,7 +81,9 @@ const webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      // chunksSortMode: 'dependency'
+      // chunksSortMode: 'manual',
+      chunksSortMode: 'manual',
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -88,7 +92,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks (module) {
+      minChunks(module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -130,8 +134,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         return context && (context.indexOf('xlsx') >= 0);
       }
     }),
-     // split codemirror into its own file
-     new webpack.optimize.CommonsChunkPlugin({
+    // split codemirror into its own file
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'codemirror',
       minChunks(module) {
         var context = module.context;

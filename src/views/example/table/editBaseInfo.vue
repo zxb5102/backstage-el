@@ -7,28 +7,29 @@
         <el-button size="small" icon="el-icon-close" type="warning" @click="cancelEdit">取消</el-button>
         <el-button size="small" icon="el-icon-check" type="success" @click="commitEdit">完成</el-button>
       </div>
-      <el-button v-if="!isEdit" class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="replaceLogo" type="info" icon="el-icon-edit">替换logo</el-button>
+      <!-- <el-button v-if="!isEdit" class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="replaceLogo" type="info" icon="el-icon-edit">替换logo</el-button> -->
+      <el-button v-if="!isEdit" class="filter-item" :disabled="editBtn" style="margin-left: 10px;" @click="openReplaceLogoDailog" type="info" icon="el-icon-edit">替换logo</el-button>
     </div>
     <el-table :data="baseInfo" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
       <el-table-column width="250px" align="center" label="设计所logo">
         <template slot-scope="scope">
           <div class="cert-wrap-img">
-            <img :src="scope.row.logo" alt="scope.row.logo" />
+            <img :src="scope.row.logo" :alt="scope.row.logo" />
           </div>
         </template>
       </el-table-column>
       <el-table-column min-width="150px" align="center" label="名称">
         <template slot-scope="scope">
-          <template v-if="isEdit">
-            <el-input type="textarea" rows=8 class="edit-input" size="small" v-model="scope.row.name"></el-input>
-          </template>
-          <span v-else>{{scope.row.name}}</span>
+          <!-- <template v-if="isEdit">
+                <el-input type="textarea" rows=8 class="edit-input" size="small" v-model="scope.row.name"></el-input>
+            </template>-->
+          <span>{{scope.row.name}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="550px" align="center" label="描述">
         <template slot-scope="scope">
           <template v-if="isEdit">
-            <el-input type="textarea" rows=8 class="edit-input" size="small" v-model="scope.row.desc"></el-input>
+            <el-input type="textarea" :rows="8" class="edit-input" size="small" v-model="scope.row.desc"></el-input>
           </template>
           <span v-else>{{scope.row.desc}}</span>
         </template>
@@ -36,17 +37,25 @@
       <el-table-column width="250px" align="center" label="地址">
         <template slot-scope="scope">
           <template v-if="isEdit">
-            <el-input type="textarea" rows=8 class="edit-input" size="small" v-model="scope.row.address"></el-input>
+            <el-input type="textarea" :rows=8 class="edit-input" size="small" v-model="scope.row.address"></el-input>
           </template>
           <span v-else>{{scope.row.address}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="250px" align="center" label="电话">
+      <el-table-column width="150px" align="center" label="电话" prop="phone">
         <template slot-scope="scope">
           <template v-if="isEdit">
             <el-input class="edit-input" size="small" v-model="scope.row.phone"></el-input>
           </template>
           <span v-else>{{scope.row.phone}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="150px" align="center" label="邮箱" prop="mail">
+        <template slot-scope="scope">
+          <template v-if="isEdit">
+            <el-input class="edit-input" size="small" v-model="scope.row.mail"></el-input>
+          </template>
+          <span v-else>{{scope.row.mail}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -66,6 +75,16 @@
         <el-button type="primary" @click="createData">确定</el-button>
       </div>
     </el-dialog>
+    <!-- 垃圾版本 -->
+    <el-dialog title="替换logo" :visible.sync="replaceLogoDialog">
+      <form ref="logoForm" enctype="multipart/form-data" multiple=false>
+        <input type="file" id="logoHold" value="" />
+      </form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="replaceLogoDialog = false">取消</el-button>
+        <el-button type="primary" @click="comitReplace">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,6 +98,8 @@ export default {
   name: "inlineEditTable",
   data() {
     return {
+      replaceLogoFile: "",
+      replaceLogoDialog: false,
       multiple: false,
       isEdit: false,
       selection: [],
@@ -87,9 +108,10 @@ export default {
       currRow: {},
       uploadBtn: false,
       fileList: [],
+      houseId: undefined,
       dialogFormVisible: false,
       uploadDialogVisible: false,
-      baseInfo: testData.baseInfo,
+      baseInfo: [],
       listLoading: true,
       listQuery: {
         page: 1,
@@ -101,6 +123,20 @@ export default {
         logo: ""
       },
       rules: {
+        mail: [
+          {
+            required: true,
+            message: "该项为必填项",
+            trigger: "blur"
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            message: "该项为必填项",
+            trigger: "blur"
+          }
+        ],
         name: [
           {
             required: true,
@@ -129,9 +165,65 @@ export default {
     }
   },
   created() {
-    this.getList();
+    axios({
+      method: "post",
+      url: "/Account/GetInfo"
+    }).then(resp => {
+      var houseId = resp.data.data.user.institutionId;
+      this.houseId = houseId;
+      this.houseName = resp.data.data.user.institution;
+      axios({
+        method: "post",
+        url: "/Home/GetDesignPro?parameter=" + houseId
+      }).then(resp => {
+        var data = resp.data;
+        this.baseInfo.push({
+          id: this.houseId,
+          logo: data.LogoPath && data.LogoPath.replace("../..", ""),
+          name: this.houseName,
+          originName: this.houseName,
+          desc: data.Introduce,
+          originDesc: data.Introduce,
+          phone: data.Phone,
+          originPhone: data.Phone,
+          address: data.Address,
+          originAddress: data.Address,
+          mail: data.Mail,
+          originMail: data.Mail
+        });
+        this.listLoading = false;
+      });
+    });
   },
   methods: {
+    comitReplace() {
+      var logoForm = this.$refs.logoForm;
+      var logoHold = document.getElementById("logoHold");
+      if (logoHold.files.length > 0) {
+        var file = logoHold.files[0];
+        let formData = new FormData();
+        formData.append("logoModify_file", file, file.name);
+        axios({
+          method: "post",
+          url: "/Home/UploadLogoModifyFile?parameter=" + this.houseId,
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(resp => {
+          this.replaceLogoDialog = false;
+          var fileReader = new FileReader();
+          fileReader.onload = () => {
+            this.baseInfo[0].logo = fileReader.result;
+          };
+          fileReader.readAsDataURL(file);
+        });
+      }
+    },
+    openReplaceLogoDailog() {
+      this.replaceLogoDialog = true;
+      document.getElementById("logoHold").value = "";
+    },
     replaceLogo() {
       this.dialogFormVisible = true;
       this.fileList = [];
@@ -141,14 +233,30 @@ export default {
       };
       this.uploadBtn = false;
     },
-    commitEdit(row) {
+    commitEdit() {
+      var row = this.baseInfo[0];
       row.originName = row.name;
       row.originDesc = row.desc;
       row.originPhone = row.phone;
       row.originAddress = row.address;
+      // row.mail = row.originMail;
+      row.originMail = row.mail;
       this.isEdit = false;
-      // row.originName = row.name;
-      // row.edit = false;
+      axios({
+        method: "post",
+        url: "/Home/UpdateDesignIntroduction",
+        data: {
+          parameters: [
+            row.phone,
+            row.mail,
+            row.address,
+            row.desc,
+            this.houseId,
+            "",
+            ""
+          ]
+        }
+      }).then();
       this.$message({
         message: "完成编辑",
         type: "success"
@@ -244,10 +352,12 @@ export default {
     },
     cancelEdit() {
       this.isEdit = false;
+      var row = this.baseInfo[0];
       row.name = row.originName;
       row.desc = row.originDesc;
       row.phone = row.originPhone;
       row.address = row.originAddress;
+      row.mail = row.originMail;
       // row.edit = false;
       this.$message({
         message: "取消编辑",

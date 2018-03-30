@@ -23,7 +23,7 @@
             <el-table-column label="图片预览" prop="name" align="center">
               <template slot-scope="scope">
                 <div class="prod-wrap-img">
-                  <img :src="scope.row.src" alt="scope.row.src" />
+                  <img :src="scope.row.src" :alt="scope.row.src" />
                 </div>
               </template>
             </el-table-column>
@@ -34,7 +34,7 @@
       <el-table-column min-width="100px" label="作品名称">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-input class="edit-input" size="small" v-model="scope.row.name"></el-input>
+            <el-input size="small" v-model="scope.row.name"></el-input>
           </template>
           <span v-else>{{ scope.row.name }}</span>
         </template>
@@ -52,6 +52,14 @@
           <span v-else>{{ scope.row.desc }}</span>
         </template>
       </el-table-column>
+
+      <el-table-column min-width="100px" label="主题图片">
+        <template slot-scope="scope">
+          <div class="wrap-prod-img">
+            <img :src="scope.row.coverImg" alt="">
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
     <!-- 分页 -->
     <el-pagination background layout="prev, pager, next" :total="1000" class="pagination">
@@ -62,6 +70,17 @@
         <el-form-item label="名称" prop="name">
           <el-input type="text" placeholder="请输入作品名称" v-model="temp.name">
           </el-input>
+        </el-form-item>
+        <el-form-item label="类型" prop="type">
+          <el-select v-model="temp.type" placeholder="请选择">
+            <el-option v-for="item in types" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="图片" prop="coverImg">
+          <el-upload :multiple="coverMultiple" class="upload-box" action="/Upload/Image" :on-success="CoverUploadSuccess" :on-remove="handleImgRemove" :file-list="coverFileList" list-type="picture">
+            <el-button size="small" type="primary" :disabled="uploadBtn">点击上传</el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item label="描述" prop="desc">
           <el-input type="textarea" placeholder="请输入作品描述" v-model="temp.desc">
@@ -75,7 +94,7 @@
     </el-dialog>
     <!-- 新增图片 -->
     <el-dialog title="上传图片" :visible.sync="uploadImgDialog">
-      <el-upload :on-remove="removeUploadImg" :file-list="fileList" :on-success="uploadSuccess" action="https://jsonplaceholder.typicode.com/posts/" list-type="picture" :multiple="multiple">
+      <el-upload :on-remove="removeUploadImg" :file-list="fileList" :on-success="uploadSuccess" action="/Upload/Image" list-type="picture" :multiple="multiple">
         <div slot="tip" class="el-upload__tip">已经上传{{successNum}}个文件</div>
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
@@ -88,17 +107,23 @@
 </template>
 
 <script>
+import Vue from "vue";
+import axios from "axios";
 import testData from "@/testData.js";
 import { fetchList } from "@/api/article";
 import Upload from "@/components/Upload/CommonUpload";
-
 export default {
   name: "inlineEditTable",
   data() {
     return {
+      types: [],
+      uploadBtn: false,
+      coverMultiple: false,
+      houseId: undefined,
       successNum: 0,
       multiple: true,
       prodImgList: [],
+      coverFileList: [],
       fileList: [],
       uploadImgDialog: false,
       commitUploadBtn: true,
@@ -109,7 +134,8 @@ export default {
       selection2: [],
       isExpend: false,
       dialogFormVisible: false,
-      prodList: testData.prodMsg,
+      // prodList: testData.prodMsg,
+      prodList: [],
       editBtn: false,
       listLoading: true,
       listQuery: {
@@ -119,15 +145,45 @@ export default {
       temp: {
         id: undefined,
         name: "",
-        desc: ""
+        desc: "",
+        coverImg: "",
+        type: ""
       },
       rules: {
-        name: [{ required: true, message: "该项为必填项", trigger: "blur" }],
-        desc: [{ required: true, message: "该项为必填项", trigger: "blur" }]
+        name: [
+          {
+            required: true,
+            message: "该项为必填项",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择类型",
+            trigger: "blur"
+          }
+        ],
+        desc: [
+          {
+            required: true,
+            message: "该项为必填项",
+            trigger: "blur"
+          }
+        ],
+        coverImg: [
+          {
+            required: true,
+            message: "请上传主题图片",
+            trigger: "blur"
+          }
+        ]
       }
     };
   },
-  components: { Upload },
+  components: {
+    Upload
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -139,21 +195,85 @@ export default {
     }
   },
   created() {
-    this.getList();
+    axios({
+      method: "post",
+      url: "/Account/GetInfo"
+    }).then(resp => {
+      var houseId = resp.data.data.user.institutionId;
+      this.houseId = houseId;
+      this.houseName = resp.data.data.user.institution;
+      axios({
+        method: "post",
+        url: "/Home/GetDesignPro?parameter=" + houseId
+      }).then(resp => {
+        var data = resp.data.DesignerProducts;
+        for (var item of data) {
+          this.prodList.push({
+            id: item.ProductId,
+            name: item.ProductName,
+            originName: item.ProductName,
+            desc: item.Description,
+            originDesc: item.Description,
+            edit: false,
+            type: item.Type,
+            coverImg: item.ProductPath.replace("../..", "http://cyy.zhcjjs.com")
+            // subImg:[]
+          });
+        }
+        var typeAry = resp.data.ProType;
+        for (var item of typeAry) {
+          this.types.push({
+            value: item.Id,
+            label: item.TypeName
+          });
+        }
+        this.listLoading = false;
+      });
+    });
+    this.listLoading = false;
   },
   methods: {
+    handleImgRemove() {
+      this.uploadBtn = false;
+      this.temp.coverImg = "";
+    },
+    CoverUploadSuccess(resp, file, fileList) {
+      this.temp.coverImg = resp.data.url;
+      this.uploadBtn = true;
+      this.temp.id = resp.data.id;
+    },
     commitUploadImg() {
       for (var item of this.prodImgList) {
-        this.previousRow.subImg.push({
-          id: new Date().getTime(),
-          name: item.name,
-          src: item.url
+        axios({
+          method: "post",
+          url: "/Home/SaveProDetailAfterModify",
+          data: {
+            parameters: [
+              item.name,
+              item.name,
+              item.url,
+              this.previousRow.id,
+              // "28",
+              this.previousRow.name
+              // ""
+            ]
+          }
+        }).then(resp => {
+          this.previousRow.subImg.push({
+            id: resp.data.Id,
+            name: resp.data.DetailName,
+            src: resp.data.DetailPhoto
+          });
         });
       }
       this.uploadImgDialog = false;
     },
     uploadSuccess(resp, file, fileList) {
-      this.prodImgList.push(file);
+      this.prodImgList.push({
+        id: resp.data.id,
+        name: file.name,
+        url: resp.data.url
+      });
       this.commitUploadBtn = false;
       this.successNum++;
       // if (this.prodImgList.length == fileList.length) {
@@ -194,10 +314,21 @@ export default {
               }
             }
           }
+          var delProdImgs = [];
           for (const item of tary) {
             var dex = this.previousRow.subImg.indexOf(item);
             this.previousRow.subImg.splice(dex, 1);
+            delProdImgs.push(item.id);
           }
+          axios({
+            method: "post",
+            data: {
+              detailId: delProdImgs,
+              productId: this.previousRow.id
+              // "28"
+            },
+            url: "/Home/DeleteProDetail"
+          }).then();
           this.$message({
             type: "success",
             message: "删除成功!"
@@ -243,6 +374,13 @@ export default {
           for (const item of tary) {
             var dex = this.prodList.indexOf(item);
             this.prodList.splice(dex, 1);
+            axios({
+              method: "post",
+              url: "/Home/DeleteDesignerPro",
+              data: {
+                parameters: [item.id, this.houseId]
+              }
+            }).then();
           }
           this.$message({
             type: "success",
@@ -283,7 +421,29 @@ export default {
         this.$refs.prodTable.toggleRowExpansion(this.previousRow, false);
       }
       if (!row.subImg) {
-        row.subImg = testData.subImg.slice(0);
+        axios({
+          method: "post",
+          url:"/Home/GetProductDetailAsproId?parameter="+row.id,
+            // "/Home/GetProductDetail?limit=10&detailName=&offset=0&productId=" +
+            // row.id
+        }).then(resp => {
+          // row.subImg = [];
+          Vue.set(row, "subImg", []);
+          // console.log();
+          var data = resp.data;
+          for (var item of data) {
+            row.subImg.push({
+              name: item.DetailName,
+              src: item.DetailPhoto.indexOf("Photos") > -1? item.DetailPhoto.replace("../..",""):item.DetailPhoto,
+              id: item.Id
+            });
+          }
+        });
+        // row.subImg = testData.subImg.slice(0);
+        // {
+        //   name:
+        //   src:
+        // }
       }
       this.previousRow = row;
       this.selection2 = [];
@@ -294,9 +454,7 @@ export default {
         const items = response.data.items;
         this.list = items.map(v => {
           this.$set(v, "edit", false); // https://vuejs.org/v2/guide/reactivity.html
-
           v.originalTitle = v.title; //  will be used when user click the cancel botton
-
           return v;
         });
         this.listLoading = false;
@@ -323,11 +481,28 @@ export default {
     createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
-          this.prodList.push({
-            id: new Date().getTime(),
-            name: this.temp.name,
-            desc: this.temp.desc,
-            edit: false
+          axios({
+            method: "post",
+            url: "/Home/SaveDesignHouseProduct",
+            data: {
+              parameters: [
+                this.temp.name,
+                this.temp.desc,
+                "author",
+                this.temp.type,
+                this.temp.coverImg,
+                this.houseId
+              ]
+            }
+          }).then(resp => {
+            var data = resp.data;
+            this.prodList.push({
+              id: data.Id,
+              name: this.temp.name,
+              desc: this.temp.desc,
+              edit: false,
+              coverImg: this.temp.coverImg
+            });
           });
           this.dialogFormVisible = false;
         } else {
@@ -341,6 +516,21 @@ export default {
       row.originName = row.name;
       row.originDesc = row.desc;
       this.editBtn = false;
+      axios({
+        url: "/Home/UpdateDesignHouseProduct",
+        method: "post",
+        data: {
+          parameters: [
+            row.id,
+            row.desc,
+            this.houseName,
+            row.type,
+            row.coverImg,
+            this.houseId,
+            row.name
+          ]
+        }
+      }).then();
       this.$message({
         message: "编辑荣誉成功",
         type: "success"
@@ -390,7 +580,7 @@ export default {
 .cancel-btn {
   position: absolute;
   right: 15px;
-  top: 10px;
+  top: 42px;
 }
 .tab-tools {
   padding-bottom: 20px;
@@ -406,11 +596,14 @@ export default {
     margin: auto;
   }
 }
-.pagination{
+.pagination {
   margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.wrap-prod-img {
+  .prod-wrap-img;
 }
 </style>
 

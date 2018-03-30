@@ -57,6 +57,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       inject: true,
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
+      chunks:['babel',"app"],
+      chunksSortMode:'manual',
       path: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
     }),
   ]

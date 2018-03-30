@@ -17,13 +17,13 @@
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip> -->
 
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+      <!-- <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
           <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <!-- <router-link to="/">
+          <router-link to="/">
             <el-dropdown-item>
               {{$t('navbar.dashboard')}}
             </el-dropdown-item>
@@ -32,12 +32,12 @@
             <el-dropdown-item>
               {{$t('navbar.github')}}
             </el-dropdown-item>
-          </a> -->
+          </a>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
     </div>
   </el-menu>
 </template>
