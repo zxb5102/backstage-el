@@ -66,12 +66,12 @@ const webpackConfig = merge(baseWebpackConfig, {
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
+      template: 'index3.html',
       inject: true,
       // favicon: resolve('favicon.ico'),
       title: '中航长江设计师产业园',
       // chunks:['babel',"app",""],
-      chunks: ['babel', "manifest", "vendor", "app"],
+      chunks: [ "manifest", "vendor",'babel', "app"],
       path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
       minify: {
         removeComments: true,

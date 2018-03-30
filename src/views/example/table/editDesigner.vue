@@ -261,7 +261,7 @@ export default {
     handleEdit() {
       var size = this.selection.length;
       if (size != 1) {
-        this.$alert("请选择一个证书进行编辑", "提示");
+        this.$alert("请选择一个进行编辑", "提示");
         return;
       }
       this.editBtn = true;

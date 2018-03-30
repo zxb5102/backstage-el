@@ -53,12 +53,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
+      template: 'index3.html',
       inject: true,
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
-      chunks:['babel',"app"],
-      chunksSortMode:'manual',
+      // chunks:['babel',"app"],
+      // chunksSortMode:'manual',
       path: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
     }),
   ]
