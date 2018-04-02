@@ -1,5 +1,6 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import axios from "axios";
 
 const user = {
   state: {
@@ -10,7 +11,7 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: [],
+    roles: [],//用户的角色列表
     setting: {
       articlePlatform: []
     }
@@ -76,6 +77,25 @@ const user = {
           reject(error)
         })
       })
+    },
+    GetUserMsg({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'post',
+          url: '/Account/GetInfo'
+        }).then(response => {
+          const data = response.data
+          // debugger;
+          if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
+            reject('error')
+          }
+          commit('SET_ROLES', data.data.user.roles)
+          commit('SET_NAME', data.data.user.name)
+          resolve(response);
+        }).catch(error => {
+          reject(error);
+        });
+      });
     },
 
     // 第三方验证登录

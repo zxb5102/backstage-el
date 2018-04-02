@@ -25,6 +25,7 @@ var userInfo = {
             "institution": "合橙设计所",
             "institutionType": 2,
             "park": "南昌",
+            roles:['manager'],
             "account": "zhougui",
             "mail": "68498695@qq.com"
         },
