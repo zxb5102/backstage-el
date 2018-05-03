@@ -41,15 +41,6 @@ export const constantRouterMap = [
       },
     ]
   },
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
   {
     path: '/user',
     redirect: '/user/editBaseInfo',
@@ -71,4 +62,34 @@ export const asyncRouterMap = [
       },
     ]
   },
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
+  // {
+  //   path: '/user',
+  //   redirect: '/user/editBaseInfo',
+  //   name: 'Table',
+  //   meta: {
+  //     title: '编辑个人主页',
+  //     icon: 'table',
+  //     roles:['manager']
+  //   },
+  //   component: Layout,
+  //   children: [
+  //     { path: 'editHonor', component: _import('example/table/editHonor'), name: 'editHonor', meta: { title: '编辑荣誉' } },
+  //     { path: 'editCert', component: _import('example/table/editCert'), name: 'editCert', meta: { title: '编辑证书' } },
+  //     { path: 'editProd', component: _import('example/table/editProd'), name: 'editProd', meta: { title: '编辑作品' } },
+  //     { path: 'editDesigner', component: _import('example/table/editDesigner'), name: 'editDesigner', meta: { title: '编辑团队' } },
+  //     { path: 'editBaseInfo', component: _import('example/table/editBaseInfo'), name: 'editBaseInfo', meta: { title: '基本信息' } },
+  //     {
+  //       path: 'editSalon', component: _import('example/table/editSalon'), name: 'editSalon', meta: { title: '活动沙龙' },
+  //     },
+  //   ]
+  // },
 ]
